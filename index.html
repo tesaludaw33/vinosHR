@@ -7,7 +7,14 @@
 
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Arial, sans-serif; background: #000; color: #fff; overflow-x: hidden; }
+/* Se agregó una imagen de fondo por defecto en caso de que el video no cargue en GitHub */
+body { 
+    font-family: Arial, sans-serif; 
+    background: url('fondo.jpg') center/cover no-repeat #000; 
+    color: #fff; 
+    overflow-x: hidden; 
+}
+
 video { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: -1; }
 
@@ -79,6 +86,16 @@ nav {
 }
 
 .card:hover { transform: translateY(-5px); border-color: rgba(212, 175, 55, 0.6); }
+
+/* Estilos nuevos para las imágenes que faltaban */
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
 .card h3 { margin-bottom: 5px; color: #D4AF37; font-size: 1.4rem; }
 .card p { margin-bottom: 15px; font-size: 0.9rem; color: #ccc; }
 
@@ -111,6 +128,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 <body>
 
 <video autoplay muted loop playsinline>
+<!-- Asegúrate de que el nombre aquí sea EXACTAMENTE igual al archivo en GitHub -->
 <source src="Bienvenida_efecto_bucle_infinito_202606102239.mp4" type="video/mp4">
 </video>
 
@@ -138,6 +156,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 <div class="grid">
 
 <div class="card">
+<img src="imagen-guaduales.jpg" alt="Barrio Guaduales">
 <h3>🏟️ Barrio Guaduales</h3>
 <p>Sede Principal</p>
 <div class="btns">
@@ -146,6 +165,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-popular.jpg" alt="Barrio Popular">
 <h3>🏟️ Barrio Popular</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573107291174" target="_blank">WhatsApp</a>
@@ -153,6 +173,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-berlin.jpg" alt="Barrio Berlín">
 <h3>🏟️ Barrio Berlín</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573171478511" target="_blank">WhatsApp</a>
@@ -160,6 +181,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-grancolombia.jpg" alt="La Gran Colombia">
 <h3>🏟️ La Gran Colombia</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573045361073" target="_blank">WhatsApp</a>
@@ -167,6 +189,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-poblado.jpg" alt="Barrio Poblado 2">
 <h3>🏟️ Barrio Poblado 2</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573014327014" target="_blank">WhatsApp</a>
@@ -174,6 +197,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-lago.jpg" alt="Villa del Lago">
 <h3>🏟️ Villa del Lago</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573132248704" target="_blank">WhatsApp</a>
@@ -181,6 +205,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-chapinero.jpg" alt="Barrio Chapinero">
 <h3>🏟️ Barrio Chapinero</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573177058877" target="_blank">WhatsApp</a>
@@ -188,6 +213,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-vallelili.jpg" alt="Barrio Valle del Lili">
 <h3>🏟️ Barrio Valle del Lili</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573163918568" target="_blank">WhatsApp</a>
@@ -195,6 +221,7 @@ footer { padding: 30px; text-align: center; background: #050505; font-size: 0.9r
 </div>
 
 <div class="card">
+<img src="imagen-yumbo.jpg" alt="Yumbo-La estancia">
 <h3>🏟️ Yumbo-La estancia</h3>
 <div class="btns">
 <a class="btn wp" href="https://wa.me/573117869368" target="_blank">WhatsApp</a>
