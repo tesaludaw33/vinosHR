@@ -16,12 +16,24 @@ nav{position:fixed;top:0;width:100%;padding:12px 20px;background:rgba(0,0,0,.55)
 .logo{font-size:1.8rem;font-weight:900;color:var(--gold);letter-spacing:2px;}
 .logo-sub{font-size:.62rem;color:rgba(255,255,255,.38);letter-spacing:5px;text-transform:uppercase;margin-top:-2px;}
 
+.admin-link{position:absolute;right:18px;top:50%;transform:translateY(-50%);color:rgba(212,175,55,.8);text-decoration:none;font-size:.75rem;border:1px solid rgba(212,175,55,.25);border-radius:999px;padding:7px 10px;background:rgba(0,0,0,.25);}
+.admin-link:hover{color:#fff;border-color:rgba(212,175,55,.65);}
+@media(max-width:520px){.admin-link{right:10px;font-size:0;width:34px;height:34px;padding:7px;}.admin-link::before{content:'⚙️';font-size:1rem;}}
+
+
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:110px 20px 50px;}
 .hero-tag{font-size:.68rem;letter-spacing:5px;color:rgba(212,175,55,.65);text-transform:uppercase;margin-bottom:14px;}
 .hero h1{font-size:clamp(3.2rem,13vw,8.5rem);color:var(--gold);line-height:.92;font-weight:900;letter-spacing:4px;text-shadow:0 0 80px rgba(212,175,55,.22);}
 .hero-sub{font-size:clamp(.88rem,3vw,1.1rem);margin-top:18px;color:#ffffff;max-width:460px;line-height:1.6;}
 
+/* COUNTDOWN */
+.cd-label{font-size:.65rem;letter-spacing:3px;color:rgba(212,175,55,.55);text-transform:uppercase;margin-top:36px;margin-bottom:12px;}
+.cd{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+.cd-box{background:var(--glass);border:1px solid var(--gb);border-radius:14px;padding:16px 22px;min-width:88px;text-align:center;backdrop-filter:blur(10px);}
+.cd-box span{display:block;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;font-variant-numeric:tabular-nums;min-width:2ch;}
+.cd-box small{font-size:.6rem;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:2px;margin-top:6px;display:block;}
+.cd-msg{font-size:clamp(1.1rem,4vw,1.7rem);color:var(--gold);font-weight:800;text-align:center;animation:pulse 2s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.55;}}
 
 /* SECTIONS */
@@ -34,13 +46,9 @@ nav{position:fixed;top:0;width:100%;padding:12px 20px;background:rgba(0,0,0,.55)
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
 .card{background:var(--glass);border:1px solid var(--gb);border-radius:20px;overflow:hidden;transition:transform .28s,border-color .28s;}
 .card:hover{transform:translateY(-6px);border-color:rgba(212,175,55,.5);}
-.card-featured{position:relative;transform:scale(1.1);border:2px solid var(--gold);background:linear-gradient(160deg, rgba(212,175,55,.18), var(--glass));box-shadow:0 0 40px rgba(212,175,55,.45);animation:featuredPulse 2.4s ease-in-out infinite;z-index:2;}
-.card-featured:hover{transform:scale(1.13) translateY(-6px);}
-.card-featured .card-ph{height:190px;font-size:3.8rem;}
-.card-featured h3{font-size:1.3rem;color:#fff;letter-spacing:.5px;}
-.featured-tag{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:#1a1500;font-size:.6rem;font-weight:900;letter-spacing:2px;padding:5px 16px;border-radius:0 0 10px 10px;text-transform:uppercase;box-shadow:0 2px 8px rgba(0,0,0,.4);white-space:nowrap;}
-@keyframes featuredPulse{0%,100%{box-shadow:0 0 30px rgba(212,175,55,.4);}50%{box-shadow:0 0 55px rgba(212,175,55,.7);}}
-@media(max-width:520px){.card-featured{transform:scale(1.04);}.card-featured:hover{transform:scale(1.06) translateY(-4px);}}
+.card-featured{transform:scale(1.08);border:2px solid #D4AF37;box-shadow:0 0 30px rgba(212,175,55,.35);}
+.card-featured .card-ph{height:180px;font-size:3.5rem;}
+.card-featured h3{font-size:1.2rem;color:#fff;}
 .card-ph{width:100%;height:140px;background:var(--gold2);display:flex;align-items:center;justify-content:center;font-size:2.6rem;}
 .card-body{padding:15px 16px 18px;text-align:center;}
 .card-body h3{color:var(--gold);font-size:.95rem;font-weight:700;margin-bottom:11px;}
@@ -74,6 +82,8 @@ footer strong{color:var(--gold);}
   .match-card{grid-template-columns:1fr;gap:8px;text-align:center;}
   .mc-team,.mc-team.right{flex-direction:column;text-align:center;}
   .mc-score{font-size:1.6rem;}
+  .cd-box{padding:12px 16px;min-width:72px;}
+  .cd-box span{font-size:2rem;}
 }
 </style>
 </head>
@@ -87,28 +97,23 @@ footer strong{color:var(--gold);}
 <nav>
   <div class="logo">VINOS HR ⚽</div>
   <div class="logo-sub">Experiencia Mundialista 2026</div>
+  <a class="admin-link" href="admin.html" title="Panel administrador">⚙️ Admin</a>
 </nav>
 
 <div class="hero">
   <div class="hero-tag">FIFA World Cup 2026 · USA · México · Canadá</div>
   <h1>MUNDIAL<br>2026</h1>
   <p class="hero-sub">Vive la pasión del fútbol con Vinos HR. 48 selecciones · 104 partidos · Una sola celebración.</p>
+  <div class="cd-label" id="cd-label">Cargando...</div>
+  <div class="cd" id="cd"></div>
 </div>
 
 <!-- 9 SEDES — primero -->
 <section class="sec">
   <div class="sec-title">Nuestras Sedes</div>
   <div class="sec-sub">Encuentra tu sede más cercana en Cali</div>
-  <div class="grid">
-    <div class="card card-featured"><span class="featured-tag">Sede Principal</span><div class="card-ph">🏟️</div><div class="card-body"><h3>⭐ Barrio Guaduales</h3><a class="btn-wp" href="https://wa.me/573138190386" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Barrio Popular</h3><a class="btn-wp" href="https://wa.me/573107291174" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Barrio Berlín</h3><a class="btn-wp" href="https://wa.me/573171478511" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>La Gran Colombia</h3><a class="btn-wp" href="https://wa.me/573045361073" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Barrio Poblado 2</h3><a class="btn-wp" href="https://wa.me/573014327014" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Villa del Lago</h3><a class="btn-wp" href="https://wa.me/573132248704" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Barrio Chapinero</h3><a class="btn-wp" href="https://wa.me/573177058877" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Barrio Valle del Lili</h3><a class="btn-wp" href="https://wa.me/573163918568" target="_blank">📲 WhatsApp</a></div></div>
-    <div class="card"><div class="card-ph">🏟️</div><div class="card-body"><h3>Yumbo – La Estancia</h3><a class="btn-wp" href="https://wa.me/573117869368" target="_blank">📲 WhatsApp</a></div></div>
+  <div class="grid" id="sedes-grid">
+    <div class="matches-loading">Cargando sedes...</div>
   </div>
 </section>
 
@@ -125,13 +130,107 @@ footer strong{color:var(--gold);}
 
 <footer>
   <strong>VINOS HR</strong> · Mundial 2026 · Cali, Colombia<br>
-  <span style="font-size:.65rem;margin-top:5px;display:block;opacity:.6">Datos: openfootball/worldcup.json</span>
+  <span style="font-size:.65rem;margin-top:5px;display:block;opacity:.6">Datos: openfootball/worldcup.json · Horarios en hora Colombia (COT)</span>
 </footer>
 
 <script>
+
+const DEFAULT_SEDES = [
+  {name:'Barrio Guaduales', phone:'573138190386', featured:true, icon:'🏟️'},
+  {name:'Barrio Popular', phone:'573107291174', featured:false, icon:'🏟️'},
+  {name:'Barrio Berlín', phone:'573171478511', featured:false, icon:'🏟️'},
+  {name:'La Gran Colombia', phone:'573045361073', featured:false, icon:'🏟️'},
+  {name:'Barrio Poblado 2', phone:'573014327014', featured:false, icon:'🏟️'},
+  {name:'Villa del Lago', phone:'573132248704', featured:false, icon:'🏟️'},
+  {name:'Barrio Chapinero', phone:'573177058877', featured:false, icon:'🏟️'},
+  {name:'Barrio Valle del Lili', phone:'573163918568', featured:false, icon:'🏟️'},
+  {name:'Yumbo – La Estancia', phone:'573117869368', featured:false, icon:'🏟️'}
+];
+function safeText(v){return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function onlyDigits(v){return String(v ?? '').replace(/\D/g,'');}
+function renderSedes(sedes){
+  const grid = document.getElementById('sedes-grid');
+  if(!grid) return;
+  const list = Array.isArray(sedes) && sedes.length ? sedes : DEFAULT_SEDES;
+  grid.innerHTML = list.map((s, i) => {
+    const phone = onlyDigits(s.phone);
+    const featured = !!s.featured;
+    const name = safeText(s.name || 'Sede sin nombre');
+    const icon = safeText(s.icon || '🏟️');
+    const cardClass = featured ? 'card card-featured' : 'card';
+    const title = featured ? `⭐ ${name}` : name;
+    const href = phone ? `https://wa.me/${phone}` : '#';
+    const disabled = phone ? '' : ' aria-disabled="true" onclick="return false"';
+    return `<div class="${cardClass}"><div class="card-ph">${icon}</div><div class="card-body"><h3>${title}</h3><a class="btn-wp" href="${href}" target="_blank" rel="noopener"${disabled}>📲 WhatsApp</a></div></div>`;
+  }).join('');
+}
+async function loadSedes(){
+  try{
+    const res = await fetch('data/sedes.json?v=' + Date.now(), {cache:'no-store'});
+    if(!res.ok) throw new Error('No se pudo cargar data/sedes.json');
+    const sedes = await res.json();
+    renderSedes(sedes);
+  }catch(e){
+    renderSedes(DEFAULT_SEDES);
+  }
+}
+loadSedes();
+
 document.getElementById('bgv').play().catch(()=>{});
 
 // ── TIEMPOS CLAVE (UTC ms) ────────────────────────────────────────────────
+// Partido 1: México vs Sudáfrica  11 jun 2026  13:00 UTC-6 = 19:00 UTC
+const T_MATCH1  = Date.UTC(2026, 5, 11, 19, 0, 0);   // ya jugado
+// Partido 2: Corea vs Rep. Checa  11 jun 2026  20:00 UTC-6 = 02:00 UTC 12 jun
+const T_MATCH2  = Date.UTC(2026, 5, 12, 2, 0, 0);    // hoy a las 21:00 COT
+// Final: 19 jul 2026  19:00 ET (UTC-4) = 23:00 UTC
+const T_FINAL   = Date.UTC(2026, 6, 19, 23, 0, 0);
+const T_WC_END  = T_FINAL + 2 * 3600000; // 2h después del final
+
+// ── COUNTDOWN ────────────────────────────────────────────────────────────
+function pad(n){ return String(Math.max(0,n)).padStart(2,'0'); }
+
+function renderBox(d,h,m,s){
+  return `<div class="cd-box"><span>${pad(d)}</span><small>Días</small></div>
+          <div class="cd-box"><span>${pad(h)}</span><small>Horas</small></div>
+          <div class="cd-box"><span>${pad(m)}</span><small>Min</small></div>
+          <div class="cd-box"><span>${pad(s)}</span><small>Seg</small></div>`;
+}
+
+function calcParts(diffMs){
+  const d = Math.floor(diffMs / 86400000);
+  const h = Math.floor((diffMs % 86400000) / 3600000);
+  const m = Math.floor((diffMs % 3600000)  / 60000);
+  const s = Math.floor((diffMs % 60000)    / 1000);
+  return {d,h,m,s};
+}
+
+function renderCD(){
+  const now = Date.now();
+  const lbl = document.getElementById('cd-label');
+  const cd  = document.getElementById('cd');
+
+  if(now < T_MATCH2){
+    // Faltan horas para el próximo partido (Corea vs Checa)
+    const {d,h,m,s} = calcParts(T_MATCH2 - now);
+    lbl.textContent = '⏱ Próximo partido — Corea del Sur vs Rep. Checa';
+    cd.innerHTML = renderBox(d,h,m,s);
+  } else if(now < T_FINAL){
+    // Mundial en marcha → cuenta para la Final
+    const {d,h,m,s} = calcParts(T_FINAL - now);
+    lbl.textContent = '🏆 El Mundial está en marcha — Tiempo para la Gran Final';
+    cd.innerHTML = renderBox(d,h,m,s);
+  } else if(now < T_WC_END){
+    lbl.textContent = '';
+    cd.innerHTML = '<p class="cd-msg">⚽ ¡La Gran Final está en marcha!</p>';
+  } else {
+    lbl.textContent = '';
+    cd.innerHTML = '<p class="cd-msg">🏆 ¡El Mundial 2026 ha concluido!</p>';
+  }
+}
+renderCD();
+setInterval(renderCD, 1000);
+
 // ── PARTIDOS EN VIVO ──────────────────────────────────────────────────────
 const FLAGS = {
   'Mexico':'🇲🇽','South Africa':'🇿🇦','South Korea':'🇰🇷','Czech Republic':'🇨🇿',
@@ -191,7 +290,7 @@ async function loadMatches(){
     const data = await r.json();
     renderMatches(data.matches || []);
     const t = new Date().toLocaleTimeString('es-CO',{timeZone:'America/Bogota'});
-    document.getElementById('matches-ts').textContent = 'Actualizado ' + t;
+    document.getElementById('matches-ts').textContent = 'Actualizado ' + t + ' · Hora Colombia (COT)';
   } catch(e){
     document.getElementById('matches-wrap').innerHTML = '<div class="matches-loading">⚠️ Error cargando partidos. Verifica tu conexión a internet.</div>';
   }
@@ -244,7 +343,7 @@ function renderMatches(matches){
         badge = `<span class="mc-badge badge-live">🔴 ${min}'</span>`;
       } else {
         scoreHtml = '<div class="mc-score vs">VS</div>';
-        badge = `<span class="mc-badge badge-next">${fmtCOT(m.utc)}</span>`;
+        badge = `<span class="mc-badge badge-next">${fmtCOT(m.utc)} COT</span>`;
       }
 
       const info = [m.group, m.ground].filter(Boolean).join(' · ');
