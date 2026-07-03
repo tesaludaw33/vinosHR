@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Barrio Guaduales",
+    "phone": "573138190386",
+    "featured": true,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Barrio Popular",
+    "phone": "573107291174",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Barrio Berlín",
+    "phone": "573171478511",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "La Gran Colombia",
+    "phone": "573045361073",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Barrio Poblado 2",
+    "phone": "573014327014",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Villa del Lago",
+    "phone": "573132248704",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Barrio Chapinero",
+    "phone": "573177058877",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Barrio Valle del Lili",
+    "phone": "573163918568",
+    "featured": false,
+    "icon": "🏟️"
+  },
+  {
+    "name": "Yumbo – La Estancia",
+    "phone": "573117869368",
+    "featured": false,
+    "icon": "🏟️"
+  }
+]
