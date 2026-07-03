@@ -90,13 +90,14 @@ footer strong{color:var(--gold);}
 /* ADMIN OCULTO EN EL MISMO INDEX */
 .admin-hidden-panel{position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:9999;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 14px;text-shadow:none;}
 .admin-hidden-panel.open{display:flex;}
-.admin-box{width:min(1060px,100%);background:#11100b;border:1px solid rgba(212,175,55,.32);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.65);padding:22px;color:#fff;}
+.admin-box{width:min(1180px,100%);background:#11100b;border:1px solid rgba(212,175,55,.32);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.65);padding:22px;color:#fff;}
 .admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;}
 .admin-head h2{font-size:clamp(1.5rem,4vw,2.3rem);color:var(--gold);margin:0;}
 .admin-close{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer;}
 .admin-note{color:rgba(255,255,255,.72);font-size:.92rem;line-height:1.5;margin:0 0 16px;}
 .admin-table{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
-.admin-row{display:grid;grid-template-columns:120px 1.2fr 1.1fr .7fr 92px;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.14);border-radius:16px;padding:10px;}
+.admin-row{display:grid;grid-template-columns:98px 118px 1.2fr 1.05fr .58fr 92px;gap:10px;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(212,175,55,.14);border-radius:16px;padding:10px;}
+.admin-row.admin-off{opacity:.55;border-color:rgba(255,255,255,.12);}
 .admin-row label{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.82);font-weight:700;font-size:.84rem;text-transform:uppercase;letter-spacing:.5px;}
 .admin-row input[type="text"],.admin-row input[type="tel"]{width:100%;background:#080806;color:#fff;border:1px solid rgba(212,175,55,.3);border-radius:12px;padding:12px 12px;font-size:1rem;outline:none;}
 .admin-row input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.12);}
@@ -222,10 +223,18 @@ footer strong{color:var(--gold);}
 const DEFAULT_SEDES = JSON.parse(document.getElementById('sedes-data')?.textContent || '[]');
 function safeText(v){return String(v ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function onlyDigits(v){return String(v ?? '').replace(/\D/g,'');}
+function normalizeSedes(sedes){
+  const source = Array.isArray(sedes) ? sedes : DEFAULT_SEDES;
+  return source.map(s => ({...s, active: s.active !== false}));
+}
 function renderSedes(sedes){
   const grid = document.getElementById('sedes-grid');
   if(!grid) return;
-  const list = Array.isArray(sedes) && sedes.length ? sedes : DEFAULT_SEDES;
+  const list = normalizeSedes(sedes).filter(s => s.active !== false);
+  if(!list.length){
+    grid.innerHTML = '<div class="matches-loading">No hay sedes visibles por el momento.</div>';
+    return;
+  }
   grid.innerHTML = list.map((s, i) => {
     const phone = onlyDigits(s.phone);
     const featured = !!s.featured;
@@ -455,12 +464,12 @@ setInterval(loadMatches, 60000);
       <button class="admin-close" type="button" id="admin-close">Cerrar</button>
     </div>
     <p class="admin-note">
-      Edita las sedes aquí mismo. Este modo no usa token de GitHub. Para publicar para todos, pulsa
+      Edita, oculta, elimina o actualiza las sedes aquí mismo. Los cambios se ven <strong>en vivo</strong> en la página mientras escribes. Para que todos los visitantes los vean, pulsa
       <strong>Descargar index actualizado</strong> y reemplaza el archivo <strong>index.html</strong> en GitHub.
     </p>
     <div class="admin-actions" style="margin-top:0">
       <button class="admin-primary" type="button" id="admin-add">+ Agregar sede</button>
-      <button class="admin-secondary" type="button" id="admin-save-preview">Guardar vista en este navegador</button>
+      <button class="admin-secondary" type="button" id="admin-save-preview">Guardar vista local</button>
       <button class="admin-secondary" type="button" id="admin-clear-preview">Quitar vista local</button>
     </div>
     <div class="admin-table" id="admin-table"></div>
@@ -504,7 +513,7 @@ setInterval(loadMatches, 60000);
     renderAdmin();
     panel.classList.add('open');
     panel.setAttribute('aria-hidden','false');
-    showStatus('Modo administrador abierto. Puedes editar las sedes y descargar el index actualizado.');
+    showStatus('Modo administrador abierto. Cualquier cambio se aplica en vivo en la página y queda guardado en este navegador. Para publicarlo para todos, descarga el index actualizado.');
   }
   function closeAdmin(){
     panel.classList.remove('open');
@@ -512,17 +521,20 @@ setInterval(loadMatches, 60000);
   }
   function renderAdmin(){
     if(!adminSedes.length){
-      adminSedes.push({name:'Nueva sede', phone:'57', featured:true, icon:'🏟️'});
+      adminSedes.push({name:'Nueva sede', phone:'57', featured:true, icon:'🏟️', active:true});
     }
-    table.innerHTML = adminSedes.map((s, i) => `
-      <div class="admin-row" data-i="${i}">
+    table.innerHTML = adminSedes.map((s, i) => {
+      const active = s.active !== false;
+      return `
+      <div class="admin-row ${active ? '' : 'admin-off'}" data-i="${i}">
+        <label><input type="checkbox" ${active ? 'checked' : ''} data-k="active"> Visible</label>
         <label><input type="radio" name="featured" ${s.featured ? 'checked' : ''} data-k="featured"> Destacar</label>
         <input type="text" value="${safeText(s.name || '')}" placeholder="Nombre de la sede" data-k="name">
         <input type="tel" value="${safeText(s.phone || '')}" placeholder="WhatsApp con indicativo: 57..." data-k="phone">
         <input type="text" value="${safeText(s.icon || '🏟️')}" placeholder="Icono" data-k="icon">
         <button class="admin-delete" type="button" data-del="${i}">Eliminar</button>
-      </div>
-    `).join('');
+      </div>`;
+    }).join('');
   }
   function readAdmin(){
     const rows = Array.from(table.querySelectorAll('.admin-row'));
@@ -530,15 +542,25 @@ setInterval(loadMatches, 60000);
       const name = row.querySelector('[data-k="name"]').value.trim() || 'Sede sin nombre';
       const phone = cleanPhone(row.querySelector('[data-k="phone"]').value);
       const icon = row.querySelector('[data-k="icon"]').value.trim() || '🏟️';
-      const featured = row.querySelector('[data-k="featured"]').checked;
-      return {name, phone, featured, icon};
+      const active = row.querySelector('[data-k="active"]').checked;
+      const featured = active && row.querySelector('[data-k="featured"]').checked;
+      return {name, phone, featured, icon, active};
     });
-    if(!adminSedes.some(s => s.featured) && adminSedes[0]) adminSedes[0].featured = true;
+    const visible = adminSedes.filter(s => s.active !== false);
+    if(!visible.some(s => s.featured) && visible[0]) visible[0].featured = true;
+  }
+  function applyLive(saveLocal = true){
+    readAdmin();
+    renderSedes(adminSedes);
+    if(saveLocal){
+      localStorage.setItem('vinoshr_admin_sedes_preview', JSON.stringify(adminSedes));
+    }
   }
   function buildUpdatedHtml(){
     readAdmin();
     const data = JSON.stringify(adminSedes, null, 2).replace(/<\//g,'<\\/');
-    const currentHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    let currentHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    currentHtml = currentHtml.replace('admin-hidden-panel open', 'admin-hidden-panel');
     return currentHtml.replace(
       /<script id="sedes-data" type="application\/json">[\s\S]*?<\/script>/,
       '<script id="sedes-data" type="application/json">\n' + data + '\n<\\/script>'.replace('\\/','/')
@@ -557,13 +579,20 @@ setInterval(loadMatches, 60000);
   }
 
   table.addEventListener('input', (e) => {
-    if(e.target.matches('[data-k]')){ readAdmin(); }
+    if(e.target.matches('[data-k]')) applyLive(true);
   });
   table.addEventListener('change', (e) => {
     if(e.target.matches('[data-k="featured"]')){
       const selected = Number(e.target.closest('.admin-row').dataset.i);
       adminSedes.forEach((s, i) => s.featured = i === selected);
       renderAdmin();
+      applyLive(true);
+      showStatus('Sede destacada actualizada en vivo.');
+    }
+    if(e.target.matches('[data-k="active"]')){
+      applyLive(true);
+      renderAdmin();
+      showStatus('Visibilidad actualizada en vivo.');
     }
   });
   table.addEventListener('click', (e) => {
@@ -571,20 +600,25 @@ setInterval(loadMatches, 60000);
     if(!btn) return;
     readAdmin();
     adminSedes.splice(Number(btn.dataset.del), 1);
-    if(!adminSedes.some(s => s.featured) && adminSedes[0]) adminSedes[0].featured = true;
+    const visible = adminSedes.filter(s => s.active !== false);
+    if(!visible.some(s => s.featured) && visible[0]) visible[0].featured = true;
     renderAdmin();
+    renderSedes(adminSedes);
+    localStorage.setItem('vinoshr_admin_sedes_preview', JSON.stringify(adminSedes));
+    showStatus('Sede eliminada en vivo. Para publicarlo para todos, descarga el index actualizado.');
   });
 
   document.getElementById('admin-add').addEventListener('click', () => {
     readAdmin();
-    adminSedes.push({name:'Nueva sede', phone:'57', featured:false, icon:'🏟️'});
+    adminSedes.push({name:'Nueva sede', phone:'57', featured:false, icon:'🏟️', active:true});
     renderAdmin();
+    renderSedes(adminSedes);
+    localStorage.setItem('vinoshr_admin_sedes_preview', JSON.stringify(adminSedes));
+    showStatus('Nueva sede agregada en vivo.');
   });
   document.getElementById('admin-save-preview').addEventListener('click', () => {
-    readAdmin();
-    localStorage.setItem('vinoshr_admin_sedes_preview', JSON.stringify(adminSedes));
-    renderSedes(adminSedes);
-    showStatus('Vista guardada solo en este navegador. Para que todos vean el cambio, descarga el index actualizado y súbelo a GitHub.');
+    applyLive(true);
+    showStatus('Vista local guardada. Ya se ve en vivo en este navegador. Para que todos vean el cambio, descarga el index actualizado y súbelo a GitHub.');
   });
   document.getElementById('admin-clear-preview').addEventListener('click', () => {
     localStorage.removeItem('vinoshr_admin_sedes_preview');
